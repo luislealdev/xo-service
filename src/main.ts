@@ -8,8 +8,20 @@ async function bootstrap() {
     logger: console,
   });
   app.useGlobalPipes(new ValidationPipe());
+  app.enableCors({
+    origin: '*',
+    credentials: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    allowedHeaders: [
+      'Origin',
+      'X-Requested-With',
+      'Content-Type',
+      'Accept',
+      'Authorization',
+    ],
+  });
 
-  
+
   const config = new DocumentBuilder()
     .setTitle('XO example')
     .setDescription('XO application documentation')
@@ -18,7 +30,6 @@ async function bootstrap() {
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);
-
 
   await app.listen(3000);
 }
